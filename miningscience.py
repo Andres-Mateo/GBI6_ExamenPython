@@ -1,30 +1,28 @@
 # Nombre: Andres, Benalcazar
-# Librerias a cargar
-
+#Librerias 
+import Bio
+from Bio.Seq import Seq
 from Bio import Entrez
-from Bio import SeqIO
-import pandas as pd
-import re,csv,itertools
-import numpy as np
+import re
 
-# Funciones
+#obtencion de datos (documentos relacionados con la palabra ) 10**5
+def download_pubmed(keyword):
+    """"La funcion download_pubmed se encarga de rescatar la id de los documentos que esten relacionados con la keyword que se envio en la base de datos de pubmed """
+    Entrez.email = "andres.benalcazar@est.ikiam.edu.ec"
+handle = Entrez.esearch(db="pubmed", 
+                        term="keyword]",
+                        usehistory="y")
+record = Entrez.read(handle)
+id_list = record["IdList"]
+record["Count"]
+results1 = record
 
-def dowload_pubmed('keyword'):
-    """
-    Con la funcion se busca obtener los id de diversos documentos encontrados en la paquina pubmed segun la keyword que se disponga
-    """
-    Entrez.email = 'andres.benalcazar@est.ikiam.edu.ec'
-    handle = Entrez.research(db='pubmed',
-                             retmax=10**5,
-                             retmode='xml',
-                             term='keyword')
-    results = Entrez.read(handle)
-    return results
+
 
 def science_plots(tipo):
-    """"La función de mining_pubs se encarga de filtrar la data dependiendo de la variable (tipo) que se envió pudiendo ser esta DP AU o AD , los datos  PMID para la extracción de documentos se obtienen gracias a la función download_pubmed que busca los documentos exactos basados en su ID   """
+    """"La función de science_plots se encarga de filtrar la data dependiendo de la variable (tipo) que se envió pudiendo ser esta DP AU o AD , los datos  PMID para la extracción de documentos se obtienen gracias a la función download_pubmed que busca los documentos exactos basados en su ID   """
     #--------------------------Uso del metodo download_pubmed---------------------------------------
-    results = download_pubmed('Bacillus cereus') #Se usa el metodo download_pubmed para obtener los documentos con una keyword  
+    results = download_pubmed('Bacullus cereus') #Se usa el metodo download_pubmed para obtener los documentos con una keyword  
     #-----------------------------------------------------------------------------------------------
     
     id_list = results['IdList']                                                  #separamos ids    
@@ -39,7 +37,7 @@ def science_plots(tipo):
         all_ = list(zip(zipcodes,zipcodes1))
         nom_colum = ['PMID','DP_year']
     else:
-       
+            
         if(tipo == "AD"):#country y el num_auth
             zipcodes = re.findall(r'PL  -.(.+)|(AU)  -|', all_data)
             nom_colum = ['country','num_auth']
@@ -65,15 +63,15 @@ def science_plots(tipo):
         all_ = list(zip(lista_1,lista_2))
         
     results = pd.DataFrame(all_,columns = nom_colum)             
-    return results
+
 #seccion de ejecicion de codigo y envio de variables
 #id_list = results['IdList']          #separamos ids 
-if _name_ == '_main_':
+if __name__ == '__main__':
  #--------------------------Se ingresa la varaible tipo para iniciar---------------------------------------
     #resultado_final = mining_pubs("AU")  #Enviamos el tipo para el procesamiento ER (DP AU AD)  
 #---------------------------------------------------------------------------------------------------------
-    print("El nombre de la la funcion es:",download_pubmed._name_ )
-    print("Documentacion de la funcion :",download_pubmed._doc_)
-    print("____________")
-    print("El nombre de la la funcion es:",science_plots._name_ )
-    print("Documentacion de la funcion :",science_plots._doc_)
+    print("El nombre de la la funcion es:",download_pubmed.__name__ )
+    print("Documentacion de la funcion :",download_pubmed.__doc__)
+    print("__________________________________")
+    print("El nombre de la la funcion es:",science_plots.__name__ )
+    print("Documentacion de la funcion :",science_plots.__doc__)
